@@ -30,13 +30,8 @@ const AddEntryPage = () => {
       }, 3000);
       
     } catch (error) {
-      console.error('Error de API, usando fallback visual:', error);
-      // Fallback para demo si MySQL no está listo aún
-      setTimeout(() => {
-        setIsSuccess(true);
-        toast.success('¡Recuerdo agregado al libro con éxito! (Modo Demo)', { icon: '✨' });
-        setTimeout(() => navigate('/book'), 3000);
-      }, 1000);
+      console.error('Error de API:', error);
+      toast.error('Hubo un problema guardando tu foto. Revisa tu conexión.');
     } finally {
       setLoading(false);
     }

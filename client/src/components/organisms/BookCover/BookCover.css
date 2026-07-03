@@ -2,15 +2,15 @@
   perspective: 1000px;
   cursor: pointer;
   position: relative;
-  width: 300px;
-  height: 420px;
+  width: clamp(260px, 80vw, 300px);
+  height: clamp(364px, 112vw, 420px);
   margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .book-cover-container {
-    width: 400px;
-    height: 560px;
+    width: clamp(300px, 40vw, 400px);
+    height: clamp(420px, 56vw, 560px);
   }
 }
 
@@ -59,7 +59,7 @@
 }
 
 .book-title {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 10vw, 3.5rem);
   line-height: 1.2;
   margin-bottom: var(--spacing-md);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);

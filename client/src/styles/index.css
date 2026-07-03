@@ -69,13 +69,29 @@
 
 body {
   font-family: var(--font-body);
-  background: var(--bg-gradient);
-  background-attachment: fixed;
+  background-color: var(--bg-dark);
   color: var(--text-primary);
+  line-height: 1.6;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(212, 168, 83, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(212, 168, 83, 0.05) 0%, transparent 50%);
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Responsividad Global */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px; /* Reduce ligeramente el tamaño base en móviles */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px; /* Reduce un poco más en pantallas muy pequeñas */
+  }
 }
 
 /* Scrollbar personalizada */

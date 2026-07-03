@@ -53,6 +53,7 @@ const Book = ({ entries = [], settings }) => {
           maxShadowOpacity={0.2} /* Sombra más suave y realista */
           showCover={true}
           mobileScrollSupport={true}
+          usePortrait={true} /* Habilita el modo de una sola página en celulares */
           onFlip={onPage}
           className="demo-book"
           ref={bookRef}

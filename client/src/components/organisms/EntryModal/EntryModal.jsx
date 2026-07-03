@@ -44,7 +44,7 @@ const EntryModal = ({ isOpen, onClose, entry }) => {
             <div className="modal-photo-section">
               {entry.photoUrl ? (
                 <img 
-                  src={`http://localhost:5000${entry.photoUrl}`} 
+                  src={entry.photoUrl} 
                   alt={`Foto de ${entry.author_name}`} 
                   className="modal-photo"
                 />

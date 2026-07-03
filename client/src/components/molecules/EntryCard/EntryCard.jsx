@@ -31,7 +31,7 @@ const EntryCard = ({ entry, onDelete, onView }) => {
       <div className="entry-card-header">
         <div className="entry-card-photo">
           {photoUrl ? (
-            <img src={`http://localhost:5000${photoUrl}`} alt={author_name} />
+            <img src={photoUrl} alt={author_name} />
           ) : (
             <div className="photo-placeholder">Sin foto</div>
           )}

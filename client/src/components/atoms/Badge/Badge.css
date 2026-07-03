@@ -1,0 +1,31 @@
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  gap: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.badge-default {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badge-gold {
+  background: rgba(212, 168, 83, 0.15);
+  color: var(--gold-light);
+  border: 1px solid rgba(212, 168, 83, 0.3);
+  padding-right: 10px;
+}
+
+.badge-rose {
+  background: rgba(232, 160, 191, 0.15);
+  color: var(--rose-primary);
+  border: 1px solid rgba(232, 160, 191, 0.3);
+}

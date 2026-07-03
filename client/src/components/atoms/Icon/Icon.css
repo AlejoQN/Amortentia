@@ -1,0 +1,9 @@
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-spin {
+  animation: spin 2s linear infinite;
+}

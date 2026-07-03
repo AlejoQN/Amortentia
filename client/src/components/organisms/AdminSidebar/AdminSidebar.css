@@ -1,0 +1,109 @@
+.admin-sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xl) 0;
+  border-radius: 0; /* Anular el radio del glass-panel */
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
+  z-index: 50;
+}
+
+.sidebar-header {
+  padding: 0 var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.sidebar-header h2 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-xl);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.sidebar-link.active {
+  background: rgba(212, 168, 83, 0.1);
+  color: var(--gold-primary);
+  border-left-color: var(--gold-primary);
+}
+
+.sidebar-footer {
+  padding: 0 var(--spacing-lg);
+  margin-top: auto;
+}
+
+.logout-link {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  justify-content: center;
+}
+
+.logout-link:hover {
+  background: rgba(255, 77, 79, 0.1);
+  color: var(--danger-color);
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--glass-border);
+    border-right: none;
+  }
+  
+  .sidebar-header {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .sidebar-nav {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+  
+  .sidebar-link {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: var(--radius-md);
+  }
+  
+  .sidebar-link.active {
+    border-left: none;
+    border-bottom-color: transparent;
+  }
+  
+  .sidebar-footer {
+    display: none;
+  }
+}

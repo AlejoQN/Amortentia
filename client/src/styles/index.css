@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+@import './animations.css';
+
+:root {
+  /* Fondos principales */
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #12102a;
+  --bg-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0d1117 100%);
+  
+  /* Acentos dorados */
+  --gold-primary: #d4a853;
+  --gold-light: #f0d68a;
+  --gold-dark: #b88d3d;
+  --gold-gradient: linear-gradient(135deg, #d4a853, #f0d68a, #d4a853);
+  
+  /* Acentos rosa */
+  --rose-primary: #e8a0bf;
+  --rose-gradient: linear-gradient(135deg, #e8a0bf, #c97b9f);
+  
+  /* Status */
+  --danger-color: #ff4d4f;
+  --success-color: #52c41a;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(20px);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  /* Texto */
+  --text-primary: #f5f5f5;
+  --text-secondary: #a0a0b0;
+  --text-gold: #d4a853;
+  --text-dark: #333333;
+  
+  /* Libro */
+  --book-cover: #5a1a1a;
+  --book-page: #faf8f0;
+  --book-page-alt: #f4f1e1;
+  --book-shadow: rgba(0, 0, 0, 0.5);
+  
+  /* Tipografía */
+  --font-display: 'Great Vibes', cursive;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-message: 'Lora', serif;
+
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  
+  /* Bordes */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
+
+/* Clases de utilidad */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-lg);
+}
+
+.text-gradient-gold {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-right: 50px; /* Previene recortes en cursivas como "Para Tí" */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-message {
+  font-family: var(--font-message);
+}

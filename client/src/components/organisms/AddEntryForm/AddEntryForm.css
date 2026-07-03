@@ -1,0 +1,36 @@
+.add-entry-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+@media (min-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-submit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+.submit-btn {
+  width: 100%;
+  font-size: 1.125rem;
+}
+
+@media (min-width: 640px) {
+  .submit-btn {
+    width: auto;
+    min-width: 250px;
+  }
+}

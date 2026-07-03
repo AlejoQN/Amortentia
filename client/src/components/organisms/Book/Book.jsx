@@ -15,9 +15,12 @@ const Book = ({ entries = [], settings }) => {
   const subtitle = settings?.book_subtitle || "Una colección de momentos y palabras de las personas que más te quieren.";
   
   // Calcular número de páginas basado en entradas (2 páginas por entrada)
-  // +2 para portada y contraportada interior
-  // +2 para portada exterior y contraportada exterior
-  // +2 para página de título y su reverso (blanco)
+  // +1 Portada Exterior
+  // +1 Portada Interior
+  // +1 Título
+  // +1 Página blanca final
+  // +1 Contraportada Interior
+  // +1 Contraportada Exterior
   const numPages = (entries.length * 2) + 6;
 
   const nextButtonClick = () => {
@@ -80,9 +83,6 @@ const Book = ({ entries = [], settings }) => {
               </p>
             </div>
           </BookPage>
-          
-          {/* Reverso del Título (Izquierda - Blanco) */}
-          <BookPage backgroundColor="var(--book-page)" />
 
           {/* Páginas dinámicas de entradas (Ahora Foto cae a la Izquierda y Mensaje a la Derecha) */}
           {entries.flatMap((entry, index) => [
@@ -111,13 +111,16 @@ const Book = ({ entries = [], settings }) => {
               </BookPage>
           ])}
 
-          {/* Contraportada Interior (Blanco) */}
+          {/* Página blanca para mantener paridad (Izquierda) */}
           <BookPage backgroundColor="var(--book-page)" />
 
-          {/* Contraportada Exterior */}
+          {/* Contraportada Interior (Blanca - Derecha) */}
+          <BookPage backgroundColor="var(--book-page)" />
+
+          {/* Contraportada Exterior (Cierre - Izquierda) */}
           <BookPage isCover={true}>
             <div style={{ opacity: 0.7 }}>
-              <div style={{ color: 'var(--gold-light)', fontSize: '2rem', marginBottom: '1rem' }}>♥</div>
+              <div style={{ color: 'var(--gold-light)', fontSize: '2rem', marginBottom: '1rem' }}>✨</div>
               <p className="font-heading">Fin</p>
             </div>
           </BookPage>

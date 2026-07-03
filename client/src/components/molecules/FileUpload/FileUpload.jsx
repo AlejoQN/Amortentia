@@ -4,7 +4,7 @@ import Icon from '../../atoms/Icon/Icon';
 import './FileUpload.css';
 
 const FileUpload = ({ 
-  label = "Sube una foto con ella", 
+  label = "Sube una foto con ella (Si no tienes, cualquiera que traiga a tu mente su persona sirve)", 
   error, 
   fileHook,
   className = '' 

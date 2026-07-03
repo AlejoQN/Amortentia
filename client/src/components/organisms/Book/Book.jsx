@@ -17,7 +17,8 @@ const Book = ({ entries = [], settings }) => {
   // Calcular número de páginas basado en entradas (2 páginas por entrada)
   // +2 para portada y contraportada interior
   // +2 para portada exterior y contraportada exterior
-  const numPages = (entries.length * 2) + 4;
+  // +2 para página de título y su reverso (blanco)
+  const numPages = (entries.length * 2) + 6;
 
   const nextButtonClick = () => {
     if (bookRef.current) {
@@ -79,49 +80,36 @@ const Book = ({ entries = [], settings }) => {
               </p>
             </div>
           </BookPage>
+          
+          {/* Reverso del Título (Izquierda - Blanco) */}
+          <BookPage backgroundColor="var(--book-page)" />
 
           {/* Páginas dinámicas de entradas (Ahora Foto cae a la Izquierda y Mensaje a la Derecha) */}
-          {entries.length > 0 ? (
-            entries.flatMap((entry, index) => [
-                /* Página Izquierda: Foto */
-                <BookPage key={`photo-${entry.id || index}`}>
-                  <div className="page-photo-container">
-                    <img 
-                      src={entry.photoUrl || "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop"} 
-                      alt={`Foto de ${entry.author_name}`} 
-                      className="page-photo" 
-                    />
-                  </div>
-                </BookPage>,
-                
-                /* Página Derecha: Mensaje */
-                <BookPage key={`msg-${entry.id || index}`}>
-                  <div className="page-message-container">
-                    <p className="page-message-text">{entry.message}</p>
-                    <p className="page-message-author">- {entry.author_name}</p>
-                    {entry.relationship && (
-                      <p style={{ textAlign: 'right', color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
-                        {entry.relationship}
-                      </p>
-                    )}
-                  </div>
-                </BookPage>
-            ])
-          ) : (
-            // Mensaje por defecto si no hay entradas
-            <>
-              <BookPage number={1}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                  <p className="font-heading" style={{ color: 'var(--text-secondary)' }}>Aún no hay fotos...</p>
+          {entries.flatMap((entry, index) => [
+              /* Página Izquierda: Foto */
+              <BookPage key={`photo-${entry.id || index}`}>
+                <div className="page-photo-container">
+                  <img 
+                    src={entry.photoUrl || "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop"} 
+                    alt={`Foto de ${entry.author_name}`} 
+                    className="page-photo" 
+                  />
+                </div>
+              </BookPage>,
+              
+              /* Página Derecha: Mensaje */
+              <BookPage key={`msg-${entry.id || index}`}>
+                <div className="page-message-container">
+                  <p className="page-message-text">{entry.message}</p>
+                  <p className="page-message-author">- {entry.author_name}</p>
+                  {entry.relationship && (
+                    <p style={{ textAlign: 'right', color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                      {entry.relationship}
+                    </p>
+                  )}
                 </div>
               </BookPage>
-              <BookPage number={2}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                  <p className="font-heading" style={{ color: 'var(--text-secondary)' }}>¡Sé el primero en agregar un recuerdo!</p>
-                </div>
-              </BookPage>
-            </>
-          )}
+          ])}
 
           {/* Contraportada Interior (Blanco) */}
           <BookPage backgroundColor="var(--book-page)" />

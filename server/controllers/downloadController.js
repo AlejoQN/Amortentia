@@ -1,35 +1,46 @@
 const archiver = require('archiver');
-const fs = require('fs');
-const path = require('path');
 const pool = require('../config/db');
+const axios = require('axios');
 
 const downloadController = {
   exportAll: async (req, res) => {
     try {
-      // 1. Configurar la cabecera de la respuesta para forzar descarga
       res.attachment('libro-recuerdos-fotos.zip');
       
-      // 2. Crear el archivo ZIP usando archiver
       const archive = archiver('zip', {
-        zlib: { level: 9 } // Nivel de compresión máximo
+        zlib: { level: 9 }
       });
 
-      // Si hay error en el archiver, cerrar y enviar status
       archive.on('error', (err) => {
         throw err;
       });
 
-      // Conectar el stream de salida del archivo zip a la respuesta HTTP
       archive.pipe(res);
 
-      // 3. Añadir todas las imágenes de la carpeta uploads al zip
-      const uploadDir = path.join(__dirname, '../uploads');
-      if (fs.existsSync(uploadDir)) {
-        // Esto añade todo el directorio 'uploads' dentro del zip en una carpeta 'fotos'
-        archive.directory(uploadDir, 'fotos');
+      // Obtener todas las fotos de la DB
+      const [entries] = await pool.query('SELECT photo_url FROM entries WHERE photo_url IS NOT NULL');
+      
+      // Descargar cada foto y añadirla al zip
+      for (let i = 0; i < entries.length; i++) {
+        try {
+          const imageUrl = entries[i].photo_url;
+          const response = await axios({
+            method: 'get',
+            url: imageUrl,
+            responseType: 'stream'
+          });
+          
+          // Extraer la extensión de la URL o usar jpg por defecto
+          const ext = imageUrl.split('.').pop().split('?')[0] || 'jpg';
+          const filename = `fotos/foto_${i + 1}.${ext}`;
+          
+          archive.append(response.data, { name: filename });
+        } catch (err) {
+          console.error(`Error descargando imagen ${entries[i].photo_url}:`, err);
+          // Continúa con la siguiente si una falla
+        }
       }
 
-      // 4. Finalizar y cerrar el stream
       await archive.finalize();
 
     } catch (error) {

@@ -8,10 +8,9 @@ const entriesController = {
         'SELECT * FROM entries WHERE is_visible = TRUE ORDER BY display_order ASC, created_at ASC'
       );
       
-      // Transformar URLs de fotos
       const entries = rows.map(entry => ({
         ...entry,
-        photoUrl: `/uploads/${entry.photo_filename}`
+        photoUrl: entry.photo_url
       }));
       
       res.json(entries);
@@ -28,7 +27,7 @@ const entriesController = {
       
       const entries = rows.map(entry => ({
         ...entry,
-        photoUrl: `/uploads/${entry.photo_filename}`
+        photoUrl: entry.photo_url
       }));
       
       res.json(entries);
@@ -47,12 +46,12 @@ const entriesController = {
         return res.status(400).json({ message: 'La foto es requerida' });
       }
 
-      const photo_filename = req.file.filename;
-      const photo_original_name = req.file.originalname;
+      const photo_url = req.file.path; // Cloudinary URL
+      const photo_public_id = req.file.filename; // Cloudinary public_id
 
       const [result] = await pool.query(
-        'INSERT INTO entries (author_name, relationship, message, photo_filename, photo_original_name) VALUES (?, ?, ?, ?, ?)',
-        [author_name, relationship || 'Amigo/a', message, photo_filename, photo_original_name]
+        'INSERT INTO entries (author_name, relationship, message, photo_url, photo_public_id) VALUES (?, ?, ?, ?, ?)',
+        [author_name, relationship || 'Amigo/a', message, photo_url, photo_public_id]
       );
 
       res.status(201).json({ 
@@ -70,19 +69,17 @@ const entriesController = {
     try {
       const { id } = req.params;
       
-      // Obtener el nombre del archivo para borrarlo del sistema
-      const [rows] = await pool.query('SELECT photo_filename FROM entries WHERE id = ?', [id]);
+      // Obtener el ID de Cloudinary para borrarlo
+      const [rows] = await pool.query('SELECT photo_public_id FROM entries WHERE id = ?', [id]);
       
       if (rows.length === 0) {
         return res.status(404).json({ message: 'Entrada no encontrada' });
       }
       
-      const fs = require('fs');
-      const path = require('path');
-      const filePath = path.join(__dirname, '../../uploads', rows[0].photo_filename);
-      
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+      const photo_public_id = rows[0].photo_public_id;
+      if (photo_public_id) {
+        const cloudinary = require('cloudinary').v2;
+        await cloudinary.uploader.destroy(photo_public_id);
       }
       
       await pool.query('DELETE FROM entries WHERE id = ?', [id]);

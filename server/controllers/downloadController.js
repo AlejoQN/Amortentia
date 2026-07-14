@@ -1,4 +1,4 @@
-const archiver = require('archiver');
+const { ZipArchive } = require('archiver');
 const pool = require('../config/db');
 const axios = require('axios');
 
@@ -7,12 +7,15 @@ const downloadController = {
     try {
       res.attachment('libro-recuerdos-fotos.zip');
       
-      const archive = archiver('zip', {
+      const archive = new ZipArchive({
         zlib: { level: 9 }
       });
 
       archive.on('error', (err) => {
-        throw err;
+        console.error('Archive error:', err);
+        if (!res.headersSent) {
+          res.status(500).json({ message: 'Error generando ZIP' });
+        }
       });
 
       archive.pipe(res);
@@ -27,16 +30,17 @@ const downloadController = {
           const response = await axios({
             method: 'get',
             url: imageUrl,
-            responseType: 'stream'
+            responseType: 'arraybuffer'
           });
           
           // Extraer la extensión de la URL o usar jpg por defecto
-          const ext = imageUrl.split('.').pop().split('?')[0] || 'jpg';
+          let ext = imageUrl.split('.').pop().split('?')[0];
+          if (!ext || ext.length > 5 || ext.includes('/')) ext = 'jpg';
           const filename = `fotos/foto_${i + 1}.${ext}`;
           
-          archive.append(response.data, { name: filename });
+          archive.append(Buffer.from(response.data), { name: filename });
         } catch (err) {
-          console.error(`Error descargando imagen ${entries[i].photo_url}:`, err);
+          console.error(`Error descargando imagen ${entries[i]?.photo_url}:`, err.message);
           // Continúa con la siguiente si una falla
         }
       }

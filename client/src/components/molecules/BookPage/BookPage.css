@@ -120,8 +120,33 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0 1rem;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for message container */
+.page-message-container::-webkit-scrollbar {
+  width: 4px;
+}
+.page-message-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.page-message-container::-webkit-scrollbar-thumb {
+  background-color: rgba(212, 168, 83, 0.3);
+  border-radius: 4px;
+}
+
+.page-message-content {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-message-relationship {
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .page-message-text {

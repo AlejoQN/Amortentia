@@ -100,13 +100,15 @@ const Book = ({ entries = [], settings }) => {
               /* Página Derecha: Mensaje */
               <BookPage key={`msg-${entry.id || index}`}>
                 <div className="page-message-container">
-                  <p className="page-message-text">{entry.message}</p>
-                  <p className="page-message-author">- {entry.author_name}</p>
-                  {entry.relationship && (
-                    <p style={{ textAlign: 'right', color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
-                      {entry.relationship}
-                    </p>
-                  )}
+                  <div className="page-message-content">
+                    <p className="page-message-text">{entry.message}</p>
+                    <p className="page-message-author">- {entry.author_name}</p>
+                    {entry.relationship && (
+                      <p className="page-message-relationship">
+                        {entry.relationship}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </BookPage>
           ])}

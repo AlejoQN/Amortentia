@@ -14,6 +14,12 @@ const AddEntryPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [previewData, setPreviewData] = useState({
+    author_name: '',
+    relationship: '',
+    message: '',
+    photoUrl: null
+  });
 
   const handleSubmit = async (formData) => {
     setLoading(true);
@@ -55,24 +61,64 @@ const AddEntryPage = () => {
 
       <div className="add-entry-content">
         <motion.div 
-          className="add-entry-card glass-panel"
+          className="add-entry-layout"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           {!isSuccess ? (
             <>
-              <div className="add-entry-title-container">
-                <h2 className="font-display text-gradient-gold">Dejar un Recuerdo</h2>
-                <p className="font-heading text-secondary">
-                  Agrega una foto especial y un mensaje para el libro.
-                </p>
+              <div className="add-entry-form-column">
+                <div className="add-entry-card glass-panel">
+                  <div className="add-entry-title-container">
+                    <h2 className="font-display text-gradient-gold">Dejar un Recuerdo</h2>
+                    <p className="font-heading text-secondary">
+                      Agrega una foto especial y un mensaje para el libro.
+                    </p>
+                  </div>
+                  
+                  <AddEntryForm 
+                    onSubmit={handleSubmit}
+                    onPreviewChange={setPreviewData}
+                    loading={loading} 
+                  />
+                </div>
               </div>
-              
-              <AddEntryForm 
-                onSubmit={handleSubmit} 
-                loading={loading} 
-              />
+
+              <div className="add-entry-preview-column">
+                <h3 className="font-heading text-secondary" style={{ marginBottom: '1rem', textAlign: 'center' }}>Vista Previa</h3>
+                <div className="preview-container">
+                  {/* Photo Preview */}
+                  <div className="book-page book-inner-page" data-density="soft" style={{ height: '325px', borderRadius: '4px 4px 0 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                    <div className="page-content" style={{ padding: '1rem' }}>
+                      <div className="page-photo-container" style={{ margin: '0', padding: '0.5rem 0.5rem 1.5rem 0.5rem' }}>
+                        <img 
+                          src={previewData.photoUrl || "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop"} 
+                          alt="Preview" 
+                          className="page-photo" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Message Preview */}
+                  <div className="book-page book-inner-page" data-density="soft" style={{ height: '325px', borderRadius: '0 0 4px 4px' }}>
+                    <div className="page-content" style={{ padding: '1.5rem' }}>
+                      <div className="page-message-container" style={{ touchAction: 'pan-y' }}>
+                        <div className="page-message-content">
+                          <p className="page-message-text" style={{ fontSize: '1.1rem' }}>{previewData.message || 'Tu mensaje aparecerá aquí...'}</p>
+                          <p className="page-message-author" style={{ fontSize: '1.5rem', marginTop: '1.5rem' }}>- {previewData.author_name || 'Tu Nombre'}</p>
+                          {(previewData.relationship) && (
+                            <p className="page-message-relationship">
+                              {previewData.relationship}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </>
           ) : (
             <motion.div 

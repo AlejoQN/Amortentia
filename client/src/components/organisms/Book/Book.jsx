@@ -3,7 +3,7 @@ import HTMLFlipBook from 'react-pageflip';
 import BookPage from '../../molecules/BookPage/BookPage';
 import Button from '../../atoms/Button/Button';
 import Icon from '../../atoms/Icon/Icon';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiMap, FiShield, FiHeart, FiFeather, FiList } from 'react-icons/fi';
 import './Book.css';
 
 const categorizeEntries = (entries) => {
@@ -53,7 +53,9 @@ const Book = ({ entries = [], settings }) => {
       quote: "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades.",
       text: "La verdadera magia no reside en los hechizos, sino en los amigos que nos acompañan en cada aventura. Al igual que el trío de oro, unidos hacemos que cada momento sea inolvidable.",
       entries: grouped.amigos,
-      alwaysShow: true
+      alwaysShow: true,
+      icon: FiMap,
+      color: '#d4a853'
     },
     {
       id: 'familia',
@@ -61,7 +63,9 @@ const Book = ({ entries = [], settings }) => {
       quote: "El amor deja su propia marca... haber sido amado tan profundamente, te dará protección para siempre.",
       text: "Como el encantamiento Patronus más poderoso, el amor de la familia nos protege, nos ilumina en la oscuridad y nos guía en cada paso del camino.",
       entries: grouped.familia,
-      alwaysShow: true
+      alwaysShow: true,
+      icon: FiShield,
+      color: '#b89947'
     },
     {
       id: 'novio',
@@ -69,7 +73,9 @@ const Book = ({ entries = [], settings }) => {
       quote: "—¿Después de todo este tiempo?\n—Siempre.",
       text: "Eres mi Snitch Dorada, la magia que ilumina mis días. Mi historia favorita siempre será la nuestra.",
       entries: grouped.novio,
-      alwaysShow: true
+      alwaysShow: true,
+      icon: FiHeart,
+      color: '#c57b86'
     },
     {
       id: 'abuelos',
@@ -77,7 +83,9 @@ const Book = ({ entries = [], settings }) => {
       quote: "Para las mentes bien organizadas, la muerte no es más que la siguiente gran aventura.",
       text: "Aquellos que nos aman jamás nos abandonan realmente. Este es un pequeño homenaje a tus tres abuelos, tres estrellas que siempre brillarán cuidándote desde el cielo.",
       entries: grouped.abuelos,
-      alwaysShow: true
+      alwaysShow: true,
+      icon: FiFeather,
+      color: '#7a8b99'
     }
   ];
 
@@ -111,6 +119,42 @@ const Book = ({ entries = [], settings }) => {
 
   const activeSections = sections.filter(s => s.entries.length > 0 || s.alwaysShow);
 
+  // Pre-calcular las páginas de inicio para el índice
+  let pageCounter = 4; // 0: Cover Front, 1: Inner Left, 2: Title, 3: TOC
+  activeSections.forEach(section => {
+    if (pageCounter % 2 !== 0) {
+      pageCounter++; // blank page antes de sección
+    }
+    section.startPage = pageCounter;
+    pageCounter++; // Título de sección
+    
+    section.entries.forEach(() => {
+      if (pageCounter % 2 === 0) {
+        pageCounter++; // blank page antes de entrada
+      }
+      pageCounter += 2; // Foto y mensaje
+    });
+  });
+
+  // Generar la página de Prólogo (Left - 3)
+  bookPages.push(
+    <BookPage key="prologue-page">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', padding: '2rem', textAlign: 'center' }}>
+        <div style={{ color: 'var(--gold-light)', marginBottom: '1.5rem', opacity: 0.8 }}>
+          <Icon icon={FiFeather} size={40} />
+        </div>
+        <h2 className="font-display text-gradient-gold" style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Prólogo</h2>
+        <p className="font-heading text-secondary" style={{ fontStyle: 'italic', fontSize: '1.2rem', lineHeight: '1.8', maxWidth: '80%' }}>
+          "Las palabras son, en mi no tan humilde opinión, nuestra más inagotable fuente de magia."
+        </p>
+        <p className="page-message-text" style={{ marginTop: '2rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+          En estas páginas habitan recuerdos compartidos, risas congeladas en el tiempo y palabras de quienes más te quieren. 
+          Que esta colección sea tu Patronus en los días oscuros.
+        </p>
+      </div>
+    </BookPage>
+  );
+
   activeSections.forEach((section, sIdx) => {
     // Asegurar que la página de título de sección caiga en la página Derecha (índice par).
     if (bookPages.length % 2 !== 0) {
@@ -120,8 +164,13 @@ const Book = ({ entries = [], settings }) => {
     // Página de Título de Sección (Right)
     bookPages.push(
       <BookPage key={`section-${section.id}`}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', padding: '2rem' }}>
-          <h2 className="font-display text-gradient-gold" style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>{section.title}</h2>
+        <div className="section-title-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', padding: '2rem' }}>
+          {section.icon && (
+            <div style={{ color: section.color || 'var(--gold-light)', marginBottom: '1.5rem' }}>
+              <Icon icon={section.icon} size={48} />
+            </div>
+          )}
+          <h2 className="font-display" style={{ fontSize: '2.5rem', marginBottom: '2rem', color: section.color || 'var(--gold-light)' }}>{section.title}</h2>
           {section.quote && (
             <p className="font-heading text-secondary" style={{ fontStyle: 'italic', marginBottom: '2rem', fontSize: '1.2rem', whiteSpace: 'pre-line' }}>
               "{section.quote}"
@@ -180,9 +229,15 @@ const Book = ({ entries = [], settings }) => {
   // Contraportada Exterior (Cierre - Izquierda)
   bookPages.push(
     <BookPage isCover={true} key="back-cover">
-      <div style={{ opacity: 0.7, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-        <div style={{ color: 'var(--gold-light)', fontSize: '2rem', marginBottom: '1rem' }}>✨</div>
-        <p className="font-heading">Fin</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', padding: '2rem', textAlign: 'center' }}>
+        <div style={{ color: 'var(--gold-light)', marginBottom: '1.5rem' }}>
+          <Icon icon={FiHeart} size={48} />
+        </div>
+        <h2 className="font-display text-gradient-gold" style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Hasta siempre</h2>
+        <p className="font-heading text-secondary" style={{ fontStyle: 'italic', fontSize: '1.2rem', lineHeight: '1.6' }}>
+          "Las historias que más amamos viven en nosotros para siempre."
+        </p>
+        <p style={{ marginTop: '2rem', color: 'var(--text-secondary)' }}>Gracias por ser parte de esta magia.</p>
       </div>
     </BookPage>
   );

@@ -7,7 +7,7 @@ import Icon from '../../atoms/Icon/Icon';
 import useFileUpload from '../../../hooks/useFileUpload';
 import './AddEntryForm.css';
 
-const AddEntryForm = ({ onSubmit, loading = false }) => {
+const AddEntryForm = ({ onSubmit, onPreviewChange, loading = false }) => {
   const fileHook = useFileUpload();
   
   const [formData, setFormData] = useState({
@@ -20,16 +20,30 @@ const AddEntryForm = ({ onSubmit, loading = false }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const newData = { ...formData, [name]: value };
+    setFormData(newData);
+    
     // Limpiar error del campo al escribir
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
     }
+    
+    if (onPreviewChange) {
+      onPreviewChange({ ...newData, photoUrl: fileHook.preview });
+    }
   };
+
+  // Notificar al padre cuando cambia la foto
+  React.useEffect(() => {
+    if (onPreviewChange) {
+      onPreviewChange({ ...formData, photoUrl: fileHook.preview });
+    }
+  }, [fileHook.preview]);
 
   const validate = () => {
     const newErrors = {};
     if (!formData.author_name.trim()) newErrors.author_name = 'Por favor ingresa tu nombre';
+    if (!formData.relationship.trim()) newErrors.relationship = 'Por favor ingresa tu relación (amigo, hermano, etc.) para organizar el recuerdo.';
     if (!formData.message.trim()) newErrors.message = 'El mensaje no puede estar vacío';
     if (!fileHook.file) fileHook.setError('Debes subir una foto');
     
@@ -62,7 +76,7 @@ const AddEntryForm = ({ onSubmit, loading = false }) => {
         />
         
         <FormField 
-          label="Tu relación (opcional)" 
+          label="Tu relación (Obligatorio)" 
           name="relationship"
           placeholder="Ej. Mejor amigo, Hermano..." 
           value={formData.relationship}
@@ -96,7 +110,7 @@ const AddEntryForm = ({ onSubmit, loading = false }) => {
           loading={loading}
           className="submit-btn"
         >
-          ✨ Agregar al Libro
+           Agregar al Libro
         </Button>
       </div>
     </form>

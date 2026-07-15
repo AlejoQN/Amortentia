@@ -23,10 +23,8 @@
   position: relative;
   z-index: 10;
   perspective: 1500px;
-  /* Brillo elegante detrás del libro */
-  box-shadow: 0 0 80px rgba(212, 168, 83, 0.15);
-  border-radius: 8px;
   margin-bottom: var(--spacing-xl);
+  touch-action: pan-x; /* Bloquea swipe vertical no deseado que cambia página */
 }
 
 /* Ajustes para react-pageflip */
